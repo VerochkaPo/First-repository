@@ -1,7 +1,10 @@
 # First-repository
 import pandas as pd
+
 import numpy as np
+
 import time
+
 import requests
 
 VACANCIES_PER_PAGE = 100
