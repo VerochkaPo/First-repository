@@ -1,4 +1,4 @@
-# First-repository
+# Job-parsing-hh.ru
 import pandas as pd
 
 import numpy as np
