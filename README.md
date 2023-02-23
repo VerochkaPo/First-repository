@@ -10,22 +10,29 @@ import requests
 VACANCIES_PER_PAGE = 100
 
 API_AREAS_REQUEST = 'https://api.hh.ru/areas'
+
 API_VACANCIES_REQUEST = 'https://api.hh.ru/vacancies'
 
 CURRANCY_USD = "USD"
+
 CURRANCY_EUR = "EUR"
 
 EXCHANGE_RATE_USD = 71
+
 EXCHANGE_RATE_EUR = 86
 
 TAX_RATE = 0.13
+
 COUNTRY_RUSSIA = 'Россия'
 
 COMMENT_REGION_PROCESSING_START = 'Обрабатываю регионы:'
+
 COMMENT_REGION_PROCESSING_FINISH = 'Готово! Найдено вакансий: '
+
 COMMENT_KEYWORD_PROCESSING_START = 'Ищу вакансии по ключевому слову '
 
 date_from = [('2022-10-31')]
+
 date_to = [('2022-10-31')]
 
 def get_russian_regions():
