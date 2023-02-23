@@ -35,20 +35,23 @@ date_from = [('2022-10-31')]
 
 date_to = [('2022-10-31')]
 
+#  Возвращает DataFrame регионов РФ
+
 def get_russian_regions():
-    ''' Возвращает DataFrame регионов РФ'''
+
     regions = requests.get(API_AREAS_REQUEST)
     
     region_frame = pd.DataFrame(regions.json())
     
     russia_index = region_frame[region_frame['name'] == COUNTRY_RUSSIA].index.tolist()[0]
+    
     russia_regions_frame = pd.DataFrame(region_frame['areas'][russia_index])
+    
     return russia_regions_frame
 
+# Возвращает количество вакансий в регионе region, найденных по ключевому слову keyword    
+
 def get_region_vacancies_count_data(keyword, region, date_from, date_to):
-    ''' Возвращает количество вакансий в регионе region, 
-    найденных по ключевому слову keyword,
-    '''    
 
     result = requests.get(
         API_VACANCIES_REQUEST, 
@@ -69,6 +72,7 @@ def get_region_vacancies_count_data(keyword, region, date_from, date_to):
     return 0
 
 def get_region_vacancies(keyword, region, page, date_from, date_to):
+
     response = requests.get(
         API_VACANCIES_REQUEST,
         params = {
@@ -82,6 +86,7 @@ def get_region_vacancies(keyword, region, page, date_from, date_to):
             'date_to': date_to,
             }
     )
+    
     if(response.status_code == 200):
         found_vacancies = response.json()['items']
 
@@ -89,9 +94,10 @@ def get_region_vacancies(keyword, region, page, date_from, date_to):
     
     return None
 
+# Возвращает вакансию в виде словаря по ее id
+
 def get_vacancy(id):
-    
-    ''' Возвращает вакансию в виде словаря по ее id'''
+      
     response = requests.get(API_VACANCIES_REQUEST + "/" + str(id))
     
     if(response.status_code == 200):
@@ -99,9 +105,10 @@ def get_vacancy(id):
     
     return None
 
+# Обогащает вакансии из vacancies данными из детальной информации по каждой вакансии, а также названием региона region_name
+
 def enrich_vacancies_list(vacancies, region_name):
-    ''' Обогащает вакансии из vacancies данными из детальной информации по каждой 
-    вакансии, а также названием региона region_name'''
+    
     for vacancy in vacancies:
       details = get_vacancy(vacancy['id'])
       if not details['experience']:
@@ -112,15 +119,15 @@ def enrich_vacancies_list(vacancies, region_name):
         vacancy['key_skills'] = ""
       else:
         vacancy['key_skills'] = details['key_skills'] 
+           
        
-        
-    
-    
       vacancy['region'] = region_name
     return vacancies
 
+# Возвращает DataFrame вакансий, найденных по ключевым словам из списка keyword_list
+
 def get_vacancies_data_frame(keyword_list, region = None):
-    ''' Возвращает DataFrame вакансий, найденных по ключевым словам из списка keyword_list'''
+    
     vacancies_list = []
     
     russia_regions_frame = get_russian_regions()
